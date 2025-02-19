@@ -63,11 +63,12 @@ export default function Home() {
     const events = daySchedule.events;
     
     for (let i = events.length - 1; i >= 0; i--) {
-      if (currentTime >= events[i].timestamp * 60) { // Convert minutes to seconds
+      if (currentTime >= events[i].timestamp * 60) {
         if (i === events.length - 1) {
           setTimeRemaining('');
           setNextClass(null);
-          return 'School day has ended';
+          setCurrentClass(null);
+          return 'Schoolday Over';
         }
         const currentBlockName = events[i].name.toLowerCase().replace(/\s+/g, '');
         if (classes) {
@@ -75,7 +76,9 @@ export default function Home() {
           
           // Look ahead for next significant class
           const nextBlockName = events[i + 1].name.toLowerCase().replace(/\s+/g, '');
-          if (nextBlockName === 'passingperiod') {
+          if (nextBlockName === 'endofday') {
+            setNextClass(null);
+          } else if (nextBlockName === 'passingperiod') {
             setNextClass(findNextSignificantClass(events, i + 1, classes));
           } else {
             setNextClass(classes[nextBlockName] || null);
