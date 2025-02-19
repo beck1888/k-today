@@ -31,6 +31,7 @@ export default function Home() {
   const [classes, setClasses] = useState<ClassData | null>(null);
   const [currentBlock, setCurrentBlock] = useState<string>('Loading...');
   const [currentClass, setCurrentClass] = useState<ClassInfo | null>(null);
+  const [nextClass, setNextClass] = useState<ClassInfo | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string>('');
 
   const getDayAbbreviation = () => {
@@ -48,6 +49,16 @@ export default function Home() {
     return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   };
 
+  const findNextSignificantClass = (events: Event[], currentIndex: number, classes: ClassData) => {
+    for (let i = currentIndex + 1; i < events.length; i++) {
+      const blockName = events[i].name.toLowerCase().replace(/\s+/g, '');
+      if (blockName !== 'passingperiod' && classes[blockName]) {
+        return classes[blockName];
+      }
+    }
+    return null;
+  };
+
   const getCurrentBlock = (daySchedule: DaySchedule, currentTime: number) => {
     const events = daySchedule.events;
     
@@ -55,13 +66,20 @@ export default function Home() {
       if (currentTime >= events[i].timestamp * 60) { // Convert minutes to seconds
         if (i === events.length - 1) {
           setTimeRemaining('');
+          setNextClass(null);
           return 'School day has ended';
         }
-        const blockName = events[i].name.toLowerCase().replace(/\s+/g, '');
-        if (classes && classes[blockName]) {
-          setCurrentClass(classes[blockName]);
-        } else {
-          setCurrentClass(null);
+        const currentBlockName = events[i].name.toLowerCase().replace(/\s+/g, '');
+        if (classes) {
+          setCurrentClass(classes[currentBlockName] || null);
+          
+          // Look ahead for next significant class
+          const nextBlockName = events[i + 1].name.toLowerCase().replace(/\s+/g, '');
+          if (nextBlockName === 'passingperiod') {
+            setNextClass(findNextSignificantClass(events, i + 1, classes));
+          } else {
+            setNextClass(classes[nextBlockName] || null);
+          }
         }
         
         const secondsRemaining = (events[i + 1].timestamp * 60) - currentTime;
@@ -81,6 +99,7 @@ export default function Home() {
       }
     }
     setTimeRemaining('');
+    setNextClass(null);
     return 'School has not started';
   };
 
@@ -159,6 +178,11 @@ export default function Home() {
               <p className="text-2xl">{currentClass.classEmoji} {currentClass.className}</p>
               {currentClass.teacher !== null && <p>Teacher: {currentClass.teacher}</p>}
               {currentClass.room !== null && <p>Room: {currentClass.room}</p>}
+            </div>
+          )}
+          {nextClass && (
+            <div className="mt-4">
+              <p className="text-gray-600">Next: {nextClass.classEmoji} {nextClass.className}</p>
             </div>
           )}
         </>
