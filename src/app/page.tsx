@@ -153,8 +153,8 @@ export default function Home() {
       {currentClass && (
         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
           <p className="text-2xl">{currentClass.classEmoji} {currentClass.className}</p>
-          {currentClass.teacher && <p>Teacher: {currentClass.teacher}</p>}
-          {currentClass.room && <p>Room: {currentClass.room}</p>}
+          {currentClass.teacher !== null && <p>Teacher: {currentClass.teacher}</p>}
+          {currentClass.room !== null && <p>Room: {currentClass.room}</p>}
         </div>
       )}
     </div>
