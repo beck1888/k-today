@@ -1,20 +1,36 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+/**
+ * Represents a scheduled event in the day
+ * Events use minutes since midnight for precise timing calculations
+ */
 interface Event {
   name: string;
   timestamp: number;
 }
 
+/**
+ * Represents a complete day's schedule
+ * Can include special messages for non-standard days (holidays, etc.)
+ */
 interface DaySchedule {
   events: Event[];
   message?: string;
 }
 
+/**
+ * Maps day abbreviations to their schedules
+ * Allows for different schedules on different days
+ */
 interface ScheduleData {
   [key: string]: DaySchedule;
 }
 
+/**
+ * Detailed information about a specific class
+ * Separates presentation data from scheduling data
+ */
 interface ClassInfo {
   className: string;
   classEmoji: string;
@@ -22,11 +38,20 @@ interface ClassInfo {
   room: string | null;
 }
 
+/**
+ * Maps normalized block names to class information
+ * Block names are lowercase with no spaces for reliable lookups
+ */
 interface ClassData {
   [key: string]: ClassInfo;
 }
 
+/**
+ * Main component for the schedule tracking application
+ * Provides real-time updates of current and upcoming classes
+ */
 export default function Home() {
+  // Core state management for tracking schedule progression
   const [schedule, setSchedule] = useState<ScheduleData | null>(null);
   const [classes, setClasses] = useState<ClassData | null>(null);
   const [currentBlock, setCurrentBlock] = useState<string>('Loading...');
@@ -34,6 +59,10 @@ export default function Home() {
   const [nextClass, setNextClass] = useState<ClassInfo | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string>('');
 
+  /**
+   * Converts current day to three-letter abbreviation
+   * Used for looking up the correct schedule in ScheduleData
+   */
   const getDayAbbreviation = () => {
     const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
     const day = days[new Date().getDay()];
@@ -41,16 +70,31 @@ export default function Home() {
     return day;
   };
 
+  /**
+   * Calculates minutes elapsed since midnight
+   * Used for period determination at minute granularity
+   */
   const getMinutesIntoDay = () => {
     const now = new Date();
     return now.getHours() * 60 + now.getMinutes();
   };
 
+  /**
+   * Calculates seconds elapsed since midnight
+   * Used for accurate countdown displays
+   */
   const getSecondsIntoDay = () => {
     const now = new Date();
     return now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   };
 
+  /**
+   * Looks ahead in the schedule to find the next actual class
+   * Skips over passing periods to show students their next destination
+   * @param events List of all events in the day
+   * @param currentIndex Current position in events array
+   * @param classes Available class information
+   */
   const findNextSignificantClass = (events: Event[], currentIndex: number, classes: ClassData) => {
     console.log('Looking for next significant class after index:', currentIndex);
     for (let i = currentIndex + 1; i < events.length; i++) {
@@ -65,6 +109,13 @@ export default function Home() {
     return null;
   };
 
+  /**
+   * Determines current schedule state and updates related information
+   * Works backwards through events for efficiency and edge case handling
+   * Updates current class, next class, and remaining time states
+   * @param daySchedule Schedule for the current day
+   * @param currentTime Current time in seconds since midnight
+   */
   const getCurrentBlock = (daySchedule: DaySchedule, currentTime: number) => {
     console.log('Getting current block for time:', currentTime);
     const events = daySchedule.events;
@@ -125,6 +176,10 @@ export default function Home() {
     return 'School has not started';
   };
 
+  /**
+   * Initial data fetch effect
+   * Loads schedule and class information from JSON files
+   */
   useEffect(() => {
     console.log('Initiating data fetch...');
     Promise.all([
@@ -141,6 +196,11 @@ export default function Home() {
     });
   }, []);
 
+  /**
+   * Schedule update effect
+   * Triggers updates when schedule data changes
+   * Handles special messages for non-standard days
+   */
   useEffect(() => {
     if (schedule) {
       console.log('Schedule update triggered');
@@ -157,6 +217,11 @@ export default function Home() {
     }
   }, [schedule]);
 
+  /**
+   * Real-time update effect
+   * Updates the display every second for accurate countdowns
+   * Cleanly handles component unmounting
+   */
   useEffect(() => {
     // Initial update
     if (schedule) {
@@ -191,6 +256,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [schedule]);
 
+  // Render section remains unchanged
   return (
     <div className="p-4 max-w-2xl mx-auto">
       <div className="mb-4 p-4 bg-gray-100 rounded-lg">
