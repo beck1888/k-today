@@ -36,7 +36,9 @@ export default function Home() {
 
   const getDayAbbreviation = () => {
     const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-    return days[new Date().getDay()];
+    const day = days[new Date().getDay()];
+    console.log('Current day determined:', day);
+    return day;
   };
 
   const getMinutesIntoDay = () => {
@@ -50,38 +52,54 @@ export default function Home() {
   };
 
   const findNextSignificantClass = (events: Event[], currentIndex: number, classes: ClassData) => {
+    console.log('Looking for next significant class after index:', currentIndex);
     for (let i = currentIndex + 1; i < events.length; i++) {
       const blockName = events[i].name.toLowerCase().replace(/\s+/g, '');
+      console.log('Checking block:', events[i].name);
       if (blockName !== 'passingperiod' && classes[blockName]) {
+        console.log('Found next significant class:', classes[blockName].className);
         return classes[blockName];
       }
     }
+    console.log('No more significant classes found for today');
     return null;
   };
 
   const getCurrentBlock = (daySchedule: DaySchedule, currentTime: number) => {
+    console.log('Getting current block for time:', currentTime);
     const events = daySchedule.events;
     
     for (let i = events.length - 1; i >= 0; i--) {
       if (currentTime >= events[i].timestamp * 60) {
         if (i === events.length - 1) {
+          console.log('School day is over');
           setTimeRemaining('');
           setNextClass(null);
           setCurrentClass(null);
           return 'Schoolday Over';
         }
+        
         const currentBlockName = events[i].name.toLowerCase().replace(/\s+/g, '');
+        console.log('Current block found:', events[i].name);
+        
         if (classes) {
-          setCurrentClass(classes[currentBlockName] || null);
+          const currentClassInfo = classes[currentBlockName] || null;
+          console.log('Current class info:', currentClassInfo);
+          setCurrentClass(currentClassInfo);
           
-          // Look ahead for next significant class
           const nextBlockName = events[i + 1].name.toLowerCase().replace(/\s+/g, '');
+          console.log('Next block name:', events[i + 1].name);
+          
           if (nextBlockName === 'endofday') {
+            console.log('Next block is end of day');
             setNextClass(null);
           } else if (nextBlockName === 'passingperiod') {
+            console.log('Next block is passing period, looking for next significant class');
             setNextClass(findNextSignificantClass(events, i + 1, classes));
           } else {
-            setNextClass(classes[nextBlockName] || null);
+            const nextClassInfo = classes[nextBlockName] || null;
+            console.log('Next class info:', nextClassInfo);
+            setNextClass(nextClassInfo);
           }
         }
         
@@ -101,28 +119,37 @@ export default function Home() {
         return `Current: ${events[i].name} (Until ${Math.floor(events[i + 1].timestamp / 60)}:${String(events[i + 1].timestamp % 60).padStart(2, '0')})`;
       }
     }
+    console.log('School has not started yet');
     setTimeRemaining('');
     setNextClass(null);
     return 'School has not started';
   };
 
   useEffect(() => {
+    console.log('Initiating data fetch...');
     Promise.all([
       fetch('/data/dates.json').then(res => res.json()),
       fetch('/data/myClasses.json').then(res => res.json())
     ]).then(([scheduleData, classData]) => {
+      console.log('Data fetched successfully');
+      console.log('Schedule data:', scheduleData);
+      console.log('Class data:', classData);
       setSchedule(scheduleData);
       setClasses(classData);
+    }).catch(error => {
+      console.error('Error fetching data:', error);
     });
   }, []);
 
   useEffect(() => {
     if (schedule) {
+      console.log('Schedule update triggered');
       const day = getDayAbbreviation();
       const currentTime = getMinutesIntoDay();
       const daySchedule = schedule[day];
       
       if (daySchedule.message) {
+        console.log('Special message found for today:', daySchedule.message);
         setCurrentBlock(daySchedule.message);
       } else {
         setCurrentBlock(getCurrentBlock(daySchedule, currentTime));
