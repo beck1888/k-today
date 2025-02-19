@@ -165,27 +165,48 @@ export default function Home() {
   }, [schedule]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-2xl mx-auto">
+      <div className="mb-4 p-4 bg-gray-100 rounded-lg">
+        <p className="text-lg font-semibold">Day: {getDayAbbreviation()}</p>
+        <p className="text-sm text-gray-600">Minutes into day: {getMinutesIntoDay()}</p>
+      </div>
+
       {schedule && schedule[getDayAbbreviation()].message ? (
-        <p className="text-xl font-bold">No School Today</p>
+        <div className="p-4 bg-yellow-100 rounded-lg">
+          <p className="text-xl font-bold">{schedule[getDayAbbreviation()].message}</p>
+        </div>
       ) : (
         <>
-          <p>Day of week: {getDayAbbreviation()}</p>
-          <p>Minutes into the day: {getMinutesIntoDay()}</p>
-          <p className="mt-4 text-lg font-bold">{currentBlock}</p>
-          {timeRemaining && (
-            <p className="text-blue-600 font-medium">{timeRemaining}</p>
-          )}
-          {currentClass && (
-            <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-              <p className="text-2xl">{currentClass.classEmoji} {currentClass.className}</p>
-              {currentClass.teacher !== null && <p>Teacher: {currentClass.teacher}</p>}
-              {currentClass.room !== null && <p>Room: {currentClass.room}</p>}
+          <div className="mb-4 p-4 bg-blue-100 rounded-lg">
+            <p className="text-xl font-bold">{currentBlock}</p>
+            {timeRemaining && (
+              <p className="text-blue-600 font-medium mt-2">{timeRemaining}</p>
+            )}
+          </div>
+
+          {currentClass ? (
+            <div className="mb-4 p-4 bg-white shadow-lg rounded-lg border border-gray-200">
+              <h2 className="text-lg font-semibold mb-2">Current Class</h2>
+              <p className="text-2xl mb-2">{currentClass.classEmoji} {currentClass.className}</p>
+              {currentClass.teacher && <p className="text-gray-700">Teacher: {currentClass.teacher}</p>}
+              {currentClass.room && <p className="text-gray-700">Room: {currentClass.room}</p>}
+            </div>
+          ) : (
+            <div className="mb-4 p-4 bg-gray-100 rounded-lg">
+              <p className="text-gray-600">No current class</p>
             </div>
           )}
-          {nextClass && (
-            <div className="mt-4">
-              <p className="text-gray-600">Next: {nextClass.classEmoji} {nextClass.className}</p>
+
+          {nextClass ? (
+            <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+              <h2 className="text-lg font-semibold mb-2">Next Class</h2>
+              <p className="text-xl">{nextClass.classEmoji} {nextClass.className}</p>
+              {nextClass.teacher && <p className="text-gray-700">Teacher: {nextClass.teacher}</p>}
+              {nextClass.room && <p className="text-gray-700">Room: {nextClass.room}</p>}
+            </div>
+          ) : (
+            <div className="p-4 bg-gray-100 rounded-lg">
+              <p className="text-gray-600">No next class</p>
             </div>
           )}
         </>
