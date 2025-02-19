@@ -58,5 +58,11 @@
         "classEmoji": "🎨",
         "teacher": "Ms. Lesser & Dr. EB",
         "room": "104"
+    },
+    "passingperiod": {
+        "className": "Passing Period",
+        "classEmoji": "🚶",
+        "teacher": null,
+        "room": null
     }
 }
