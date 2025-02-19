@@ -1,0 +1,62 @@
+{
+    "block1": {
+        "className": "AP Calculus AB",
+        "classEmoji": "📊",
+        "teacher": "Wolfden",
+        "room": "222"
+    },
+    "block2":{
+        "className": "Free Block",
+        "classEmoji": "🥳",
+        "teacher": null,
+        "room": null
+    },
+    "block3": {
+        "className": "AP Spanish Literature",
+        "classEmoji": "🇪🇸",
+        "teacher": "Fradejas",
+        "room": "214"
+    },
+    "block4": {
+        "className": "AP US Government and Politics",
+        "classEmoji": "🇺🇸",
+        "teacher": "Nahum",
+        "room": "103"
+    },
+    "block5": {
+        "className": "TA Spanish 4",
+        "classEmoji": "🍎",
+        "teacher": "Fradejas",
+        "room": "214"
+    },
+    "block6": {
+        "className": "Comedy & Satire",
+        "classEmoji": "🎭",
+        "teacher": "Kasowski",
+        "room": "104"
+    },
+    "block7": {
+        "className": "Physics Honors",
+        "classEmoji": "🎳",
+        "teacher": "Grabowski",
+        "room": "219"
+    },
+    "block8": {
+        "className": "Free Block",
+        "classEmoji": "🥳",
+        "teacher": null,
+        "room": null
+    },
+    "block9": {
+        "className": "AP Computer Science A",
+        "classEmoji": "💻",
+        "teacher": "Kuszmaul",
+        "room": "226"
+    },
+    "heartWork": {
+        "className": "Creative Space",
+        "classEmoji": "🎨",
+        "teacher": "Ms. Lesser & Dr. EB",
+        "room": "104"
+    }
+}
