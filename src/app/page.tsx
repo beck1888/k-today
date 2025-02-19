@@ -144,18 +144,24 @@ export default function Home() {
 
   return (
     <div className="p-4">
-      <p>Day of week: {getDayAbbreviation()}</p>
-      <p>Minutes into the day: {getMinutesIntoDay()}</p>
-      <p className="mt-4 text-lg font-bold">{currentBlock}</p>
-      {timeRemaining && (
-        <p className="text-blue-600 font-medium">{timeRemaining}</p>
-      )}
-      {currentClass && (
-        <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-          <p className="text-2xl">{currentClass.classEmoji} {currentClass.className}</p>
-          {currentClass.teacher !== null && <p>Teacher: {currentClass.teacher}</p>}
-          {currentClass.room !== null && <p>Room: {currentClass.room}</p>}
-        </div>
+      {schedule && schedule[getDayAbbreviation()].message ? (
+        <p className="text-xl font-bold">No School Today</p>
+      ) : (
+        <>
+          <p>Day of week: {getDayAbbreviation()}</p>
+          <p>Minutes into the day: {getMinutesIntoDay()}</p>
+          <p className="mt-4 text-lg font-bold">{currentBlock}</p>
+          {timeRemaining && (
+            <p className="text-blue-600 font-medium">{timeRemaining}</p>
+          )}
+          {currentClass && (
+            <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+              <p className="text-2xl">{currentClass.classEmoji} {currentClass.className}</p>
+              {currentClass.teacher !== null && <p>Teacher: {currentClass.teacher}</p>}
+              {currentClass.room !== null && <p>Room: {currentClass.room}</p>}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
