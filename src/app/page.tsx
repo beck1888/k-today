@@ -97,90 +97,84 @@ export default function Home() {
   }, [schedule]);
 
   return (
-    <div className="max-w-2xl mx-auto space-y-4">
-      {renderTime && (
-        <div className="card p-3 text-xs text-gray-400 flex justify-between items-center">
-          <span>Initial render: {renderTime}ms</span>
-          <button 
-            onClick={() => setRenderTime(null)} 
-            className="text-gray-500 hover:text-gray-300 transition-colors"
-          >
-            ×
-          </button>
-        </div>
-      )}
+    <>
+      <div className="max-w-2xl mx-auto space-y-4">
+        {schedule && schedule[getDayAbbreviation()].message ? (
+          <div className="card p-6 border-accent-secondary">
+            <p className="text-2xl font-bold text-accent-secondary">{schedule[getDayAbbreviation()].message}</p>
+          </div>
+        ) : (
+          <>
+            <div className="card p-6">
+              <p className="text-xl font-bold text-accent-primary">{currentBlock}</p>
+              {timeRemaining && (
+                <p className="text-accent-secondary font-medium mt-2 animate-pulse-slow">{timeRemaining}</p>
+              )}
+            </div>
 
-      <div className="card p-4">
-        <p className="text-lg font-semibold text-accent-primary">{getDayAbbreviation()}</p>
-        <p className="text-sm text-gray-400">{getMinutesIntoDay()} minutes into day</p>
+            {currentClass ? (
+              <div className="card p-6 glass">
+                <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Current Class</h2>
+                <p className="text-2xl mb-3">
+                  <span className="mr-2">{currentClass.classEmoji} </span>
+                  <span className="font-semibold">{currentClass.className}</span>
+                </p>
+                {currentClass.teacher && (
+                  <p className="text-gray-400">
+                    <span className="inline-block w-20 text-gray-500">Teacher: </span>
+                    {currentClass.teacher}
+                  </p>
+                )}
+                {currentClass.room && (
+                  <p className="text-gray-400">
+                    <span className="inline-block w-20 text-gray-500">Room: </span>
+                    {currentClass.room}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div className="card p-6">
+                <p className="text-gray-500">No current class</p>
+              </div>
+            )}
+
+            {nextClass ? (
+              <div className="card p-6 border-accent-secondary/30">
+                <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Next Class</h2>
+                <p className="text-xl mb-3">
+                  <span className="mr-2">{nextClass.classEmoji}</span>
+                  <span className="font-semibold">{nextClass.className}</span>
+                </p>
+                {nextClass.teacher && (
+                  <p className="text-gray-400">
+                    <span className="inline-block w-20 text-gray-500">Teacher</span>
+                    {nextClass.teacher}
+                  </p>
+                )}
+                {nextClass.room && (
+                  <p className="text-gray-400">
+                    <span className="inline-block w-20 text-gray-500">Room</span>
+                    {nextClass.room}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <div className="card p-6">
+                <p className="text-gray-500">No next class</p>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
-      {schedule && schedule[getDayAbbreviation()].message ? (
-        <div className="card p-6 border-accent-secondary">
-          <p className="text-2xl font-bold text-accent-secondary">{schedule[getDayAbbreviation()].message}</p>
-        </div>
-      ) : (
-        <>
-          <div className="card p-6">
-            <p className="text-xl font-bold text-accent-primary">{currentBlock}</p>
-            {timeRemaining && (
-              <p className="text-accent-secondary font-medium mt-2 animate-pulse-slow">{timeRemaining}</p>
-            )}
-          </div>
-
-          {currentClass ? (
-            <div className="card p-6 glass">
-              <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Current Class</h2>
-              <p className="text-2xl mb-3">
-                <span className="mr-2">{currentClass.classEmoji} </span>
-                <span className="font-semibold">{currentClass.className}</span>
-              </p>
-              {currentClass.teacher && (
-                <p className="text-gray-400">
-                  <span className="inline-block w-20 text-gray-500">Teacher: </span>
-                  {currentClass.teacher}
-                </p>
-              )}
-              {currentClass.room && (
-                <p className="text-gray-400">
-                  <span className="inline-block w-20 text-gray-500">Room: </span>
-                  {currentClass.room}
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="card p-6">
-              <p className="text-gray-500">No current class</p>
-            </div>
-          )}
-
-          {nextClass ? (
-            <div className="card p-6 border-accent-secondary/30">
-              <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Next Class</h2>
-              <p className="text-xl mb-3">
-                <span className="mr-2">{nextClass.classEmoji}</span>
-                <span className="font-semibold">{nextClass.className}</span>
-              </p>
-              {nextClass.teacher && (
-                <p className="text-gray-400">
-                  <span className="inline-block w-20 text-gray-500">Teacher</span>
-                  {nextClass.teacher}
-                </p>
-              )}
-              {nextClass.room && (
-                <p className="text-gray-400">
-                  <span className="inline-block w-20 text-gray-500">Room</span>
-                  {nextClass.room}
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="card p-6">
-              <p className="text-gray-500">No next class</p>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+      {/* Time info fixed at bottom left */}
+      <div className="fixed bottom-4 left-4 text-xs text-gray-500 space-y-0.5">
+        <p>{getDayAbbreviation()}</p>
+        <p>{getMinutesIntoDay()} minutes into day</p>
+        {renderTime && (
+          <p>Initial render: {renderTime}ms</p>
+        )}
+      </div>
+    </>
   );
 }
