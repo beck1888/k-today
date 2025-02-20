@@ -78,15 +78,7 @@ export default function Home() {
   useEffect(() => {
     const startTime = performance.now();
     
-    console.log('Hi there! 👋');
-    console.log('If you are seeing this, you are probably interested in the code behind this project.');
-    console.log('Feel free to check out the source code on GitHub: https://github.com/beck1888/k-today');
-    
-    console.groupCollapsed('📊 Initial Load Metrics');
-    console.log('Day:', getDayAbbreviation());
-    console.log('Minutes into day:', getMinutesIntoDay());
-    console.log('Load time: Calculating...');
-    console.groupEnd();
+    console.log('Hi there! 👋 If you are seeing this, you are probably interested in the code behind this project. Feel free to check out the source code on GitHub: https://github.com/beck1888/k-today');
 
     // Update the load time after initial data fetch
     Promise.all([
