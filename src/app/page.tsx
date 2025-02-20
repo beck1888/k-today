@@ -23,6 +23,14 @@ export default function Home() {
   const getCurrentBlock = (daySchedule: DaySchedule, currentTime: number) => {
     const events = daySchedule.events;
     
+    // If before first event of the day
+    if (currentTime < events[0].timestamp * 60) {
+      setTimeRemaining('');
+      setNextClass(null);
+      setCurrentClass(null);
+      return 'School has not started';
+    }
+    
     for (let i = events.length - 1; i >= 0; i--) {
       if (currentTime >= events[i].timestamp * 60) {
         if (i === events.length - 1) {
@@ -32,11 +40,9 @@ export default function Home() {
           return 'The school day has concluded';
         }
         
-        // Update the case conversion to handle special cases
         const currentBlockName = events[i].name.toLowerCase().replace(/\s+/g, '').replace('kabshab', 'kabShab');
         
         if (classes) {
-          // Look up class info regardless of block type
           const currentClassInfo = classes[currentBlockName] || {
             className: events[i].name,
             classEmoji: "📍",
@@ -45,7 +51,6 @@ export default function Home() {
           };
           setCurrentClass(currentClassInfo);
           
-          // Find next significant class
           const nextClassInfo = findNextSignificantClass(events, i, classes);
           setNextClass(nextClassInfo);
         }
@@ -59,6 +64,7 @@ export default function Home() {
     
     setTimeRemaining('');
     setNextClass(null);
+    setCurrentClass(null);
     return 'School has not started';
   };
 
