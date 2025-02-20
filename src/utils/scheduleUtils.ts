@@ -26,8 +26,13 @@ export const formatTimeRemaining = (secondsRemaining: number): string => {
 };
 
 export const formatCountdown = (secondsRemaining: number): string => {
-  const minutes = Math.floor(secondsRemaining / 60);
+  const hours = Math.floor(secondsRemaining / 3600);
+  const minutes = Math.floor((secondsRemaining % 3600) / 60);
   const seconds = secondsRemaining % 60;
+  
+  if (hours > 0) {
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 

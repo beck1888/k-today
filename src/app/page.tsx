@@ -172,7 +172,7 @@ export default function Home() {
             <div className="space-y-2">
               {timeRemaining && (
                 <div className="text-center mb-4">
-                  <p className="text-6xl font-bold text-white font-mono">
+                  <p className="text-5xl font-bold text-white font-mono">
                     {formatCountdown(secondsRemaining)}
                   </p>
                 </div>
