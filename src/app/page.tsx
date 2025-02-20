@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { ClassData, ClassInfo, ScheduleData, DaySchedule } from '../types/schedule';
 import {
   getDayAbbreviation,
@@ -120,14 +121,20 @@ export default function Home() {
                   <span className="font-semibold">{currentClass.className}</span>
                 </p>
                 {currentClass.teacher && (
-                  <p className="text-gray-400">
-                    <span className="inline-block w-20 text-gray-500">Teacher: </span>
+                  <p className="text-gray-400 flex items-center">
+                    <span className="inline-flex items-center w-20 text-gray-500">
+                      <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
+                      Teacher:
+                    </span>
                     {currentClass.teacher}
                   </p>
                 )}
                 {currentClass.room && (
-                  <p className="text-gray-400">
-                    <span className="inline-block w-20 text-gray-500">Room: </span>
+                  <p className="text-gray-400 flex items-center">
+                    <span className="inline-flex items-center w-20 text-gray-500">
+                      <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
+                      Room:
+                    </span>
                     {currentClass.room}
                   </p>
                 )}
@@ -146,14 +153,20 @@ export default function Home() {
                   <span className="font-semibold">{nextClass.className}</span>
                 </p>
                 {nextClass.teacher && (
-                  <p className="text-gray-400">
-                    <span className="inline-block w-20 text-gray-500">Teacher</span>
+                  <p className="text-gray-400 flex items-center">
+                    <span className="inline-flex items-center w-20 text-gray-500">
+                      <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
+                      Teacher
+                    </span>
                     {nextClass.teacher}
                   </p>
                 )}
                 {nextClass.room && (
-                  <p className="text-gray-400">
-                    <span className="inline-block w-20 text-gray-500">Room</span>
+                  <p className="text-gray-400 flex items-center">
+                    <span className="inline-flex items-center w-20 text-gray-500">
+                      <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
+                      Room
+                    </span>
                     {nextClass.room}
                   </p>
                 )}
