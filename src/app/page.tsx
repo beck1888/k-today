@@ -25,9 +25,11 @@ export default function Home() {
     
     // If before first event of the day
     if (currentTime < events[0].timestamp * 60) {
-      setTimeRemaining('');
-      setNextClass(null);
+      setTimeRemaining(formatTimeRemaining(events[0].timestamp * 60 - currentTime));
       setCurrentClass(null);
+      if (classes) {
+        setNextClass(findNextSignificantClass(events, -1, classes));
+      }
       return 'School has not started';
     }
     

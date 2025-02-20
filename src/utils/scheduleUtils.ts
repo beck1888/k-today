@@ -38,3 +38,16 @@ export const findNextSignificantClass = (
   }
   return null;
 };
+
+export const findFirstClassOfDay = (
+  events: Event[],
+  classes: ClassData
+): ClassInfo | null => {
+  for (let i = 0; i < events.length; i++) {
+    const blockName = events[i].name.toLowerCase().replace(/\s+/g, '');
+    if (blockName !== 'passingperiod' && classes[blockName]) {
+      return classes[blockName];
+    }
+  }
+  return null;
+};
