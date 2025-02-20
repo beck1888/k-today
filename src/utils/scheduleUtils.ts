@@ -51,3 +51,18 @@ export const findFirstClassOfDay = (
   }
   return null;
 };
+
+export const findRemainingClasses = (
+  events: Event[],
+  currentIndex: number,
+  classes: ClassData
+): ClassInfo[] => {
+  const remainingClasses: ClassInfo[] = [];
+  for (let i = currentIndex + 1; i < events.length; i++) {
+    const blockName = events[i].name.toLowerCase().replace(/\s+/g, '');
+    if (blockName !== 'passingperiod' && classes[blockName]) {
+      remainingClasses.push(classes[blockName]);
+    }
+  }
+  return remainingClasses;
+};

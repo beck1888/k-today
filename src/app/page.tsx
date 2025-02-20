@@ -7,7 +7,8 @@ import {
   getMinutesIntoDay,
   getSecondsIntoDay,
   formatTimeRemaining,
-  findNextSignificantClass
+  findNextSignificantClass,
+  findRemainingClasses
 } from '../utils/scheduleUtils';
 
 export default function Home() {
@@ -19,6 +20,8 @@ export default function Home() {
   const [currentClass, setCurrentClass] = useState<ClassInfo | null>(null);
   const [nextClass, setNextClass] = useState<ClassInfo | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string>('');
+  const [remainingClasses, setRemainingClasses] = useState<ClassInfo[]>([]);
+  const [isLaterClassesExpanded, setIsLaterClassesExpanded] = useState(false);
 
   const getCurrentBlock = (daySchedule: DaySchedule, currentTime: number) => {
     const events = daySchedule.events;
@@ -29,6 +32,7 @@ export default function Home() {
       setCurrentClass(null);
       if (classes) {
         setNextClass(findNextSignificantClass(events, -1, classes));
+        setRemainingClasses(findRemainingClasses(events, -1, classes));
       }
       return 'School has not started';
     }
@@ -39,6 +43,7 @@ export default function Home() {
           setTimeRemaining('');
           setNextClass(null);
           setCurrentClass(null);
+          setRemainingClasses([]);
           return 'The school day has concluded';
         }
         
@@ -55,6 +60,7 @@ export default function Home() {
           
           const nextClassInfo = findNextSignificantClass(events, i, classes);
           setNextClass(nextClassInfo);
+          setRemainingClasses(findRemainingClasses(events, i, classes));
         }
         
         const secondsRemaining = (events[i + 1].timestamp * 60) - currentTime;
@@ -148,32 +154,65 @@ export default function Home() {
               </div>
             </div>
 
-            {nextClass && (
-              <div className="card p-6 border-accent-secondary/30">
-                <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Next Class</h2>
-                <p className="text-xl mb-3">
-                  <span className="mr-2">{nextClass.classEmoji}</span>
-                  <span className="font-semibold">{nextClass.className}</span>
-                </p>
-                {nextClass.teacher && (
-                  <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-24 text-gray-500">
-                      <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
-                      Teacher:
-                    </span>
-                    <span className="ml-2">{nextClass.teacher}</span>
+            {remainingClasses.length > 0 && (
+              <>
+                {/* Next class (always visible) */}
+                <div className="card p-6 border-accent-secondary/30">
+                  <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">
+                    Next Class
+                  </h2>
+                  <p className="text-xl mb-3">
+                    <span className="mr-2">{remainingClasses[0].classEmoji}</span>
+                    <span className="font-semibold">{remainingClasses[0].className}</span>
                   </p>
+                  {remainingClasses[0].teacher && (
+                    <p className="text-gray-400 flex items-center">
+                      <span className="inline-flex items-center w-24 text-gray-500">
+                        <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
+                        Teacher:
+                      </span>
+                      <span className="ml-2">{remainingClasses[0].teacher}</span>
+                    </p>
+                  )}
+                  {remainingClasses[0].room && (
+                    <p className="text-gray-400 flex items-center">
+                      <span className="inline-flex items-center w-24 text-gray-500">
+                        <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
+                        Room:
+                      </span>
+                      <span className="ml-2">{remainingClasses[0].room}</span>
+                    </p>
+                  )}
+                </div>
+
+                {/* Later classes (collapsible) */}
+                {remainingClasses.length > 1 && (
+                  <div className="card p-6 border-dark-300">
+                    <button
+                      onClick={() => setIsLaterClassesExpanded(!isLaterClassesExpanded)}
+                      className="w-full flex items-center justify-between text-sm uppercase tracking-wider text-gray-400 mb-2"
+                    >
+                      <span>Later Today ({remainingClasses.length - 1} classes)</span>
+                      <span className={`transition-transform duration-200 ${isLaterClassesExpanded ? 'rotate-180' : ''}`}>
+                        ▼
+                      </span>
+                    </button>
+                    
+                    {isLaterClassesExpanded && (
+                      <div className="space-y-4 mt-4">
+                        {remainingClasses.slice(1).map((classInfo, index) => (
+                          <div key={index} className="border-t border-dark-300 pt-4">
+                            <p className="text-xl">
+                              <span className="mr-2">{classInfo.classEmoji}</span>
+                              <span className="font-semibold">{classInfo.className}</span>
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )}
-                {nextClass.room && (
-                  <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-24 text-gray-500">
-                      <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
-                      Room:
-                    </span>
-                    <span className="ml-2">{nextClass.room}</span>
-                  </p>
-                )}
-              </div>
+              </>
             )}
           </>
         )}
