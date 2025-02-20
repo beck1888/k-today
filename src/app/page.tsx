@@ -45,20 +45,9 @@ export default function Home() {
           };
           setCurrentClass(currentClassInfo);
           
-          // Update the case conversion to handle special cases
-          const nextBlockName = events[i + 1].name.toLowerCase().replace(/\s+/g, '').replace('kabshab', 'kabShab');
-          
-          if (nextBlockName === 'endofday') {
-            setNextClass(null);
-          } else {
-            // Look up next class info regardless of type
-            setNextClass(classes[nextBlockName] || {
-              className: events[i + 1].name,
-              classEmoji: "📍",
-              teacher: null,
-              room: null
-            });
-          }
+          // Find next significant class
+          const nextClassInfo = findNextSignificantClass(events, i, classes);
+          setNextClass(nextClassInfo);
         }
         
         const secondsRemaining = (events[i + 1].timestamp * 60) - currentTime;
