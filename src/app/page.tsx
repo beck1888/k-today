@@ -180,32 +180,25 @@ export default function Home() {
                   <span className="mr-2 no-select">{remainingClasses[0].classEmoji}</span>
                   <span className="font-semibold selectable">{remainingClasses[0].className}</span>
                 </p>
-                <p className="text-gray-400 flex items-center">
-                  <span className="inline-flex items-center w-24 text-gray-500 no-select">
-                    <Image src="/icons/clock.svg" alt="" width={16} height={16} className="mr-2" />
-                    Time:
-                  </span>
-                  <span className="ml-2 selectable">
-                    {daySchedule && nextEventIndex !== -1 && nextEventIndex + 1 < daySchedule.events.length ? 
-                      `${Math.floor(daySchedule.events[nextEventIndex].timestamp / 60)}:${String(daySchedule.events[nextEventIndex].timestamp % 60).padStart(2, '0')} → ${Math.floor(daySchedule.events[nextEventIndex + 1].timestamp / 60)}:${String(daySchedule.events[nextEventIndex + 1].timestamp % 60).padStart(2, '0')}`
-                      : 'N/A'
-                    }
-                  </span>
-                </p>
-                <p className="text-gray-400 flex items-center">
-                  <span className="inline-flex items-center w-24 text-gray-500 no-select">
-                    <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
-                    Teacher:
-                  </span>
-                  <span className="ml-2 selectable">{remainingClasses[0].teacher || 'N/A'}</span>
-                </p>
-                <p className="text-gray-400 flex items-center">
-                  <span className="inline-flex items-center w-24 text-gray-500 no-select">
-                    <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
-                    Room:
-                  </span>
-                  <span className="ml-2 selectable">{remainingClasses[0].room || 'N/A'}</span>
-                </p>
+                <div className="space-y-2 text-gray-400">
+                  <p className="flex items-center">
+                    <Image src="/icons/clock.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                    <span className="selectable">
+                      {daySchedule && nextEventIndex !== -1 && nextEventIndex + 1 < daySchedule.events.length ? 
+                        `${Math.floor(daySchedule.events[nextEventIndex].timestamp / 60)}:${String(daySchedule.events[nextEventIndex].timestamp % 60).padStart(2, '0')} → ${Math.floor(daySchedule.events[nextEventIndex + 1].timestamp / 60)}:${String(daySchedule.events[nextEventIndex + 1].timestamp % 60).padStart(2, '0')}`
+                        : 'N/A'
+                      }
+                    </span>
+                  </p>
+                  <p className="flex items-center">
+                    <Image src="/icons/person.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                    <span className="selectable">{remainingClasses[0].teacher || 'N/A'}</span>
+                  </p>
+                  <p className="flex items-center">
+                    <Image src="/icons/door.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                    <span className="selectable">{remainingClasses[0].room || 'N/A'}</span>
+                  </p>
+                </div>
               </div>
 
               {remainingClasses.length > 1 && (
