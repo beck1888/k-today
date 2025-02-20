@@ -39,7 +39,7 @@ export default function Home() {
         setNextClass(findNextSignificantClass(events, -1, classes));
         setRemainingClasses(findRemainingClasses(events, -1, classes));
       }
-      return 'School has not started';
+      return '';
     }
     
     for (let i = events.length - 1; i >= 0; i--) {
@@ -51,7 +51,7 @@ export default function Home() {
           setNextClass(null);
           setCurrentClass(null);
           setRemainingClasses([]);
-          return 'The school day has concluded';
+          return '';
         }
         
         const currentBlockName = events[i].name.toLowerCase().replace(/\s+/g, '').replace('kabshab', 'kabShab');
@@ -73,14 +73,14 @@ export default function Home() {
         const secondsRemaining = (events[i + 1].timestamp * 60) - currentTime;
         setTimeRemaining(formatTimeRemaining(secondsRemaining));
         
-        return `Current: ${events[i].name} (Until ${Math.floor(events[i + 1].timestamp / 60)}:${String(events[i + 1].timestamp % 60).padStart(2, '0')})`;
+        return '';
       }
     }
     
     setTimeRemaining('');
     setNextClass(null);
     setCurrentClass(null);
-    return 'School has not started';
+    return '';
   };
 
   useEffect(() => {
@@ -136,7 +136,6 @@ export default function Home() {
         <>
           <div className="card p-6">
             <div className="space-y-2">
-              <p className="text-xl font-bold text-accent-primary">{currentBlock}</p>
               {currentClass && (
                 <>
                   <div className="flex items-center gap-2 mt-1">
