@@ -44,8 +44,8 @@
     "block8": {
         "className": "Free Block",
         "classEmoji": "🥳",
-        "teacher": null,
-        "room": null
+        "teacher": "N/A",
+        "room": "N/A"
     },
     "block9": {
         "className": "AP Computer Science A",

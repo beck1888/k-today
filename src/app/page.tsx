@@ -130,22 +130,16 @@ export default function Home() {
                       <span>{currentClass.classEmoji}</span>
                       <span className="font-semibold">{currentClass.className}</span>
                     </div>
-                    {(currentClass.teacher || currentClass.room) && (
-                      <div className="text-sm text-gray-400 space-y-1">
-                        {currentClass.teacher && (
-                          <p className="flex items-center">
-                            <Image src="/icons/person.svg" alt="" width={14} height={14} className="mr-2" />
-                            {currentClass.teacher}
-                          </p>
-                        )}
-                        {currentClass.room && (
-                          <p className="flex items-center">
-                            <Image src="/icons/door.svg" alt="" width={14} height={14} className="mr-2" />
-                            {currentClass.room}
-                          </p>
-                        )}
-                      </div>
-                    )}
+                    <div className="text-sm text-gray-400 space-y-1">
+                      <p className="flex items-center">
+                        <Image src="/icons/person.svg" alt="" width={14} height={14} className="mr-2" />
+                        {currentClass.teacher || 'N/A'}
+                      </p>
+                      <p className="flex items-center">
+                        <Image src="/icons/door.svg" alt="" width={14} height={14} className="mr-2" />
+                        {currentClass.room || 'N/A'}
+                      </p>
+                    </div>
                   </>
                 )}
                 {timeRemaining && (
@@ -165,24 +159,20 @@ export default function Home() {
                     <span className="mr-2">{remainingClasses[0].classEmoji}</span>
                     <span className="font-semibold">{remainingClasses[0].className}</span>
                   </p>
-                  {remainingClasses[0].teacher && (
-                    <p className="text-gray-400 flex items-center">
-                      <span className="inline-flex items-center w-24 text-gray-500">
-                        <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
-                        Teacher:
-                      </span>
-                      <span className="ml-2">{remainingClasses[0].teacher}</span>
-                    </p>
-                  )}
-                  {remainingClasses[0].room && (
-                    <p className="text-gray-400 flex items-center">
-                      <span className="inline-flex items-center w-24 text-gray-500">
-                        <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
-                        Room:
-                      </span>
-                      <span className="ml-2">{remainingClasses[0].room}</span>
-                    </p>
-                  )}
+                  <p className="text-gray-400 flex items-center">
+                    <span className="inline-flex items-center w-24 text-gray-500">
+                      <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
+                      Teacher:
+                    </span>
+                    <span className="ml-2">{remainingClasses[0].teacher || 'N/A'}</span>
+                  </p>
+                  <p className="text-gray-400 flex items-center">
+                    <span className="inline-flex items-center w-24 text-gray-500">
+                      <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
+                      Room:
+                    </span>
+                    <span className="ml-2">{remainingClasses[0].room || 'N/A'}</span>
+                  </p>
                 </div>
 
                 {/* Later classes (collapsible) */}
