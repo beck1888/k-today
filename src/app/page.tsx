@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ClassData, ClassInfo, ScheduleData, DaySchedule } from '../types/schedule';
@@ -12,6 +13,12 @@ import {
 } from '../utils/scheduleUtils';
 
 export default function Home() {
+  useEffect(() => {
+    console.log('Hi there! 👋');
+    console.log('If you are seeing this, you are probably interested in the code behind this project.');
+    console.log('Feel free to check out the source code on GitHub: https://github.com/beck1888/k-today');
+  }, []);
+
   const [renderTime, setRenderTime] = useState<number | null>(null);
   const [renderStartTime, setRenderStartTime] = useState<number | null>(null);
   const [schedule, setSchedule] = useState<ScheduleData | null>(null);
