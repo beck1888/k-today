@@ -13,14 +13,6 @@ import {
 } from '../utils/scheduleUtils';
 
 export default function Home() {
-  useEffect(() => {
-    console.log('Hi there! 👋');
-    console.log('If you are seeing this, you are probably interested in the code behind this project.');
-    console.log('Feel free to check out the source code on GitHub: https://github.com/beck1888/k-today');
-  }, []);
-
-  const [renderTime, setRenderTime] = useState<number | null>(null);
-  const [renderStartTime, setRenderStartTime] = useState<number | null>(null);
   const [schedule, setSchedule] = useState<ScheduleData | null>(null);
   const [classes, setClasses] = useState<ClassData | null>(null);
   const [currentBlock, setCurrentBlock] = useState<string>('Loading...');
@@ -84,18 +76,33 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setRenderStartTime(performance.now());
+    const startTime = performance.now();
     
+    console.log('Hi there! 👋');
+    console.log('If you are seeing this, you are probably interested in the code behind this project.');
+    console.log('Feel free to check out the source code on GitHub: https://github.com/beck1888/k-today');
+    
+    console.groupCollapsed('📊 Initial Load Metrics');
+    console.log('Day:', getDayAbbreviation());
+    console.log('Minutes into day:', getMinutesIntoDay());
+    console.log('Load time: Calculating...');
+    console.groupEnd();
+
+    // Update the load time after initial data fetch
     Promise.all([
       fetch('/data/dates.json').then(res => res.json()),
       fetch('/data/myClasses.json').then(res => res.json())
     ]).then(([scheduleData, classData]) => {
       setSchedule(scheduleData);
       setClasses(classData);
-      const endTime = performance.now();
-      setRenderTime(Math.round(endTime - renderStartTime!));
-      setRenderStartTime(null);
-    }).catch(() => setRenderStartTime(null));
+      const loadTime = Math.round(performance.now() - startTime);
+      
+      console.groupCollapsed('📊 Initial Load Metrics');
+      console.log('Day:', getDayAbbreviation());
+      console.log('Minutes into day:', getMinutesIntoDay());
+      console.log('Load time:', loadTime + 'ms');
+      console.groupEnd();
+    });
   }, []);
 
   useEffect(() => {
@@ -210,14 +217,6 @@ export default function Home() {
               </>
             )}
           </>
-        )}
-      </div>
-
-      <div className="fixed bottom-4 left-4 text-xs text-gray-500 space-y-0.5 no-select">
-        <p>{getDayAbbreviation()}</p>
-        <p>{getMinutesIntoDay()} minutes into day</p>
-        {renderTime && (
-          <p>Initial render: {renderTime}ms</p>
         )}
       </div>
     </>
