@@ -21,7 +21,7 @@ export default function Home() {
   const [classes, setClasses] = useState<ClassData | null>(null);
   const [currentBlock, setCurrentBlock] = useState<string>('Loading...');
   const [currentClass, setCurrentClass] = useState<ClassInfo | null>(null);
-  const [nextClass, setNextClass] = useState<ClassInfo | null>(null);
+  const [, setNextClass] = useState<ClassInfo | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string>('');
   const [remainingClasses, setRemainingClasses] = useState<ClassInfo[]>([]);
   const [isLaterClassesExpanded, setIsLaterClassesExpanded] = useState(false);
