@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import Lottie from 'lottie-react';
 import checkAnimation from '../../public/animations/check.json';
@@ -28,6 +28,7 @@ export default function Home() {
   const [nextEventIndex, setNextEventIndex] = useState<number>(-1);
   const [daySchedule, setDaySchedule] = useState<DaySchedule | null>(null);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const getCurrentBlock = (daySchedule: DaySchedule, currentTime: number) => {
     const events = daySchedule.events;
@@ -142,6 +143,10 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [schedule]);
 
+  useEffect(() => {
+    audioRef.current = new Audio('/audio/day-complete.mp3');
+  }, []);
+
   return (
     <div className="max-w-2xl mx-auto space-y-4 no-select">
       {schedule && schedule[getDayAbbreviation()].message ? (
@@ -156,6 +161,7 @@ export default function Home() {
               animationData={checkAnimation} 
               loop={false} 
               style={{ width: 600, height: 600 }}
+              onComplete={() => audioRef.current?.play()}
             />
           </div>
         </div>
