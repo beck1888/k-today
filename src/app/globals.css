@@ -9,6 +9,15 @@
 body {
   @apply bg-dark-100 text-gray-100;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  user-select: none;
+}
+
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
 }
 
 @layer components {
