@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-dark-100 text-gray-100;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl bg-dark-200 border border-dark-300 backdrop-blur-sm;
+  }
+  
+  .glass {
+    @apply bg-dark-200/50 backdrop-blur-md;
+  }
 }
