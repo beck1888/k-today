@@ -21,12 +21,18 @@ export default function Home() {
   const [timeRemaining, setTimeRemaining] = useState<string>('');
   const [remainingClasses, setRemainingClasses] = useState<ClassInfo[]>([]);
   const [isLaterClassesExpanded, setIsLaterClassesExpanded] = useState(false);
+  const [currentEventIndex, setCurrentEventIndex] = useState<number>(-1);
+  const [nextEventIndex, setNextEventIndex] = useState<number>(-1);
+  const [daySchedule, setDaySchedule] = useState<DaySchedule | null>(null);
 
   const getCurrentBlock = (daySchedule: DaySchedule, currentTime: number) => {
     const events = daySchedule.events;
+    setDaySchedule(daySchedule);
     
     // If before first event of the day
     if (currentTime < events[0].timestamp * 60) {
+      setCurrentEventIndex(-1);
+      setNextEventIndex(0);
       setTimeRemaining(formatTimeRemaining(events[0].timestamp * 60 - currentTime));
       setCurrentClass(null);
       if (classes) {
@@ -38,6 +44,8 @@ export default function Home() {
     
     for (let i = events.length - 1; i >= 0; i--) {
       if (currentTime >= events[i].timestamp * 60) {
+        setCurrentEventIndex(i);
+        setNextEventIndex(i + 1);
         if (i === events.length - 1) {
           setTimeRemaining('');
           setNextClass(null);
@@ -119,98 +127,117 @@ export default function Home() {
   }, [schedule]);
 
   return (
-    <>
-      <div className="max-w-2xl mx-auto space-y-4 no-select">
-        {schedule && schedule[getDayAbbreviation()].message ? (
-          <div className="card p-6 border-accent-secondary">
-            <p className="text-2xl font-bold text-accent-secondary">{schedule[getDayAbbreviation()].message}</p>
-          </div>
-        ) : (
-          <>
-            <div className="card p-6">
-              <div className="space-y-2">
-                <p className="text-xl font-bold text-accent-primary">{currentBlock}</p>
-                {currentClass && (
-                  <>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="no-select">{currentClass.classEmoji}</span>
-                      <span className="font-semibold selectable">{currentClass.className}</span>
-                    </div>
-                    <div className="text-sm text-gray-400 space-y-1">
-                      <p className="flex items-center">
-                        <Image src="/icons/person.svg" alt="" width={14} height={14} className="mr-2 no-select" />
-                        <span className="selectable">{currentClass.teacher || 'N/A'}</span>
-                      </p>
-                      <p className="flex items-center">
-                        <Image src="/icons/door.svg" alt="" width={14} height={14} className="mr-2 no-select" />
-                        <span className="selectable">{currentClass.room || 'N/A'}</span>
-                      </p>
-                    </div>
-                  </>
-                )}
-                {timeRemaining && (
-                  <p className="text-accent-secondary font-medium animate-pulse-slow">{timeRemaining}</p>
-                )}
-              </div>
-            </div>
-
-            {remainingClasses.length > 0 && (
-              <>
-                <div className="card p-6 border-accent-secondary/30">
-                  <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">
-                    Next Class
-                  </h2>
-                  <p className="text-xl mb-3">
-                    <span className="mr-2 no-select">{remainingClasses[0].classEmoji}</span>
-                    <span className="font-semibold selectable">{remainingClasses[0].className}</span>
-                  </p>
-                  <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-24 text-gray-500 no-select">
-                      <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
-                      Teacher:
-                    </span>
-                    <span className="ml-2 selectable">{remainingClasses[0].teacher || 'N/A'}</span>
-                  </p>
-                  <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-24 text-gray-500 no-select">
-                      <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
-                      Room:
-                    </span>
-                    <span className="ml-2 selectable">{remainingClasses[0].room || 'N/A'}</span>
-                  </p>
-                </div>
-
-                {remainingClasses.length > 1 && (
-                  <div className="card p-6 border-dark-300">
-                    <button
-                      onClick={() => setIsLaterClassesExpanded(!isLaterClassesExpanded)}
-                      className="w-full flex items-center justify-between text-sm uppercase tracking-wider text-gray-400 mb-2"
-                    >
-                        <span>{remainingClasses.length - 1 > 10 ? 'Ten' : ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'][remainingClasses.length - 1]} Other {remainingClasses.length - 1 === 1 ? 'Event' : 'Events'} Today</span>
-                      <span className={`transition-transform duration-200 ${isLaterClassesExpanded ? 'rotate-180' : ''}`}>
-                        ▼
-                      </span>
-                    </button>
-                    
-                    {isLaterClassesExpanded && (
-                      <div className="space-y-4 mt-4">
-                        {remainingClasses.slice(1).map((classInfo, index) => (
-                          <div key={index} className="border-t border-dark-300 pt-4">
-                            <p className="text-xl">
-                              <span className="mr-2 no-select">{classInfo.classEmoji}</span>
-                              <span className="font-semibold selectable">{classInfo.className}</span>
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+    <div className="max-w-2xl mx-auto space-y-4 no-select">
+      {schedule && schedule[getDayAbbreviation()].message ? (
+        <div className="card p-6 border-accent-secondary">
+          <p className="text-2xl font-bold text-accent-secondary">{schedule[getDayAbbreviation()].message}</p>
+        </div>
+      ) : (
+        <>
+          <div className="card p-6">
+            <div className="space-y-2">
+              <p className="text-xl font-bold text-accent-primary">{currentBlock}</p>
+              {currentClass && (
+                <>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="no-select">{currentClass.classEmoji}</span>
+                    <span className="font-semibold selectable">{currentClass.className}</span>
                   </div>
-                )}
-              </>
-            )}
-          </>
-        )}
-      </div>
-    </>
+                  <div className="text-sm text-gray-400 space-y-1">
+                    <p className="flex items-center">
+                      <Image src="/icons/clock.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                      <span className="selectable">
+                        {daySchedule && currentEventIndex !== -1 && nextEventIndex !== -1 ? 
+                          `${Math.floor(daySchedule.events[currentEventIndex].timestamp / 60)}:${String(daySchedule.events[currentEventIndex].timestamp % 60).padStart(2, '0')} → ${Math.floor(daySchedule.events[nextEventIndex].timestamp / 60)}:${String(daySchedule.events[nextEventIndex].timestamp % 60).padStart(2, '0')}`
+                          : 'N/A'
+                        }
+                      </span>
+                    </p>
+                    <p className="flex items-center">
+                      <Image src="/icons/person.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                      <span className="selectable">{currentClass.teacher || 'N/A'}</span>
+                    </p>
+                    <p className="flex items-center">
+                      <Image src="/icons/door.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                      <span className="selectable">{currentClass.room || 'N/A'}</span>
+                    </p>
+                  </div>
+                </>
+              )}
+              {timeRemaining && (
+                <p className="text-accent-secondary font-medium animate-pulse-slow">{timeRemaining}</p>
+              )}
+            </div>
+          </div>
+
+          {remainingClasses.length > 0 && (
+            <>
+              <div className="card p-6 border-accent-secondary/30">
+                <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">
+                  Next Class
+                </h2>
+                <p className="text-xl mb-3">
+                  <span className="mr-2 no-select">{remainingClasses[0].classEmoji}</span>
+                  <span className="font-semibold selectable">{remainingClasses[0].className}</span>
+                </p>
+                <p className="text-gray-400 flex items-center">
+                  <span className="inline-flex items-center w-24 text-gray-500 no-select">
+                    <Image src="/icons/clock.svg" alt="" width={16} height={16} className="mr-2" />
+                    Time:
+                  </span>
+                  <span className="ml-2 selectable">
+                    {daySchedule && nextEventIndex !== -1 && nextEventIndex + 1 < daySchedule.events.length ? 
+                      `${Math.floor(daySchedule.events[nextEventIndex].timestamp / 60)}:${String(daySchedule.events[nextEventIndex].timestamp % 60).padStart(2, '0')} → ${Math.floor(daySchedule.events[nextEventIndex + 1].timestamp / 60)}:${String(daySchedule.events[nextEventIndex + 1].timestamp % 60).padStart(2, '0')}`
+                      : 'N/A'
+                    }
+                  </span>
+                </p>
+                <p className="text-gray-400 flex items-center">
+                  <span className="inline-flex items-center w-24 text-gray-500 no-select">
+                    <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
+                    Teacher:
+                  </span>
+                  <span className="ml-2 selectable">{remainingClasses[0].teacher || 'N/A'}</span>
+                </p>
+                <p className="text-gray-400 flex items-center">
+                  <span className="inline-flex items-center w-24 text-gray-500 no-select">
+                    <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
+                    Room:
+                  </span>
+                  <span className="ml-2 selectable">{remainingClasses[0].room || 'N/A'}</span>
+                </p>
+              </div>
+
+              {remainingClasses.length > 1 && (
+                <div className="card p-6 border-dark-300">
+                  <button
+                    onClick={() => setIsLaterClassesExpanded(!isLaterClassesExpanded)}
+                    className="w-full flex items-center justify-between text-sm uppercase tracking-wider text-gray-400 mb-2"
+                  >
+                    <span>{remainingClasses.length - 1 > 10 ? 'Ten' : ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'][remainingClasses.length - 1]} Other {remainingClasses.length - 1 === 1 ? 'Event' : 'Events'} Today</span>
+                    <span className={`transition-transform duration-200 ${isLaterClassesExpanded ? 'rotate-180' : ''}`}>
+                      ▼
+                    </span>
+                  </button>
+                  
+                  {isLaterClassesExpanded && (
+                    <div className="space-y-4 mt-4">
+                      {remainingClasses.slice(1).map((classInfo, index) => (
+                        <div key={index} className="border-t border-dark-300 pt-4">
+                          <p className="text-xl">
+                            <span className="mr-2 no-select">{classInfo.classEmoji}</span>
+                            <span className="font-semibold selectable">{classInfo.className}</span>
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+        </>
+      )}
+    </div>
   );
 }
