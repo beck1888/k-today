@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Lottie from 'lottie-react';
+import checkAnimation from '../../public/animations/check.json';
 import { ClassData, ClassInfo, ScheduleData, DaySchedule } from '../types/schedule';
 import {
   getDayAbbreviation,
@@ -31,6 +33,15 @@ export default function Home() {
     const events = daySchedule.events;
     setDaySchedule(daySchedule);
     
+    // If after last event of the day
+    if (currentTime >= events[events.length - 1].timestamp * 60) {
+      setTimeRemaining('');
+      setNextClass(null);
+      setCurrentClass(null);
+      setRemainingClasses([]);
+      return 'School is over for today! 🎉';
+    }
+
     // If before first event of the day
     if (currentTime < events[0].timestamp * 60) {
       const remaining = events[0].timestamp * 60 - currentTime;
@@ -136,6 +147,17 @@ export default function Home() {
       {schedule && schedule[getDayAbbreviation()].message ? (
         <div className="card p-6 border-accent-secondary">
           <p className="text-2xl font-bold text-accent-secondary">{schedule[getDayAbbreviation()].message}</p>
+        </div>
+      ) : currentBlock === 'School is over for today! 🎉' ? (
+        <div className="card p-6 border-accent-secondary">
+          <p className="text-2xl font-bold text-accent-secondary">{currentBlock}</p>
+          <div className="flex justify-center items-center mt-4">
+            <Lottie 
+              animationData={checkAnimation} 
+              loop={false} 
+              style={{ width: 600, height: 600 }}
+            />
+          </div>
         </div>
       ) : (
         <>
