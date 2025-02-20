@@ -122,20 +122,20 @@ export default function Home() {
                 </p>
                 {currentClass.teacher && (
                   <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-20 text-gray-500">
+                    <span className="inline-flex items-center w-24 text-gray-500">
                       <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
                       Teacher:
                     </span>
-                    {currentClass.teacher}
+                    <span className="ml-2">{currentClass.teacher}</span>
                   </p>
                 )}
                 {currentClass.room && (
                   <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-20 text-gray-500">
+                    <span className="inline-flex items-center w-24 text-gray-500">
                       <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
                       Room:
                     </span>
-                    {currentClass.room}
+                    <span className="ml-2">{currentClass.room}</span>
                   </p>
                 )}
               </div>
@@ -154,20 +154,20 @@ export default function Home() {
                 </p>
                 {nextClass.teacher && (
                   <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-20 text-gray-500">
+                    <span className="inline-flex items-center w-24 text-gray-500">
                       <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
-                      Teacher
+                      Teacher:
                     </span>
-                    {nextClass.teacher}
+                    <span className="ml-2">{nextClass.teacher}</span>
                   </p>
                 )}
                 {nextClass.room && (
                   <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-20 text-gray-500">
+                    <span className="inline-flex items-center w-24 text-gray-500">
                       <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
-                      Room
+                      Room:
                     </span>
-                    {nextClass.room}
+                    <span className="ml-2">{nextClass.room}</span>
                   </p>
                 )}
               </div>
