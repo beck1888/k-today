@@ -160,13 +160,13 @@ export default function Home() {
         </div>
       ) : currentBlock === 'School is over for today! 🎉' ? (
         <div className="card p-6 border-accent-secondary">
-          <p className="text-2xl font-bold text-accent-secondary">{currentBlock}</p>
+            <p className="text-4xl font-bold text-accent-secondary text-center">{currentBlock}</p>
           <div className="flex justify-center items-center mt-4">
             <Lottie 
               animationData={checkAnimation} 
               loop={false} 
               style={{ width: 600, height: 600 }}
-              onComplete={() => audioRef.current?.play()}
+              // onComplete={() => audioRef.current?.play()}
             />
           </div>
         </div>
@@ -181,8 +181,8 @@ export default function Home() {
                   </p>
                 </div>
               )}
-              <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">
-                Current Class
+              <h2 className={`text-sm uppercase tracking-wider text-gray-400 mb-2 ${!currentClass ? 'text-center' : ''}`}>
+                {currentClass ? "Current Class" : "Until school starts"}
               </h2>
               {currentClass && (
                 <>
