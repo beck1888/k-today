@@ -71,7 +71,11 @@ export default function Home() {
           return '';
         }
         
-        const currentBlockName = events[i].name.toLowerCase().replace(/\s+/g, '').replace('kabshab', 'kabShab');
+        const currentBlockName = events[i].name.toLowerCase()
+          .replace(/\s+/g, '')
+          .replace('kabshab', 'kabShab')
+          .replace('creative space', 'Creative Space')
+          .replace('heart work', 'heartWork');
         
         if (classes) {
           const currentClassInfo = classes[currentBlockName] || {
