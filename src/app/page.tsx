@@ -108,45 +108,39 @@ export default function Home() {
         ) : (
           <>
             <div className="card p-6">
-              <p className="text-xl font-bold text-accent-primary">{currentBlock}</p>
-              {timeRemaining && (
-                <p className="text-accent-secondary font-medium mt-2 animate-pulse-slow">{timeRemaining}</p>
-              )}
+              <div className="space-y-2">
+                <p className="text-xl font-bold text-accent-primary">{currentBlock}</p>
+                {currentClass && (
+                  <>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span>{currentClass.classEmoji}</span>
+                      <span className="font-semibold">{currentClass.className}</span>
+                    </div>
+                    {(currentClass.teacher || currentClass.room) && (
+                      <div className="text-sm text-gray-400 space-y-1">
+                        {currentClass.teacher && (
+                          <p className="flex items-center">
+                            <Image src="/icons/person.svg" alt="" width={14} height={14} className="mr-2" />
+                            {currentClass.teacher}
+                          </p>
+                        )}
+                        {currentClass.room && (
+                          <p className="flex items-center">
+                            <Image src="/icons/door.svg" alt="" width={14} height={14} className="mr-2" />
+                            {currentClass.room}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+                {timeRemaining && (
+                  <p className="text-accent-secondary font-medium animate-pulse-slow">{timeRemaining}</p>
+                )}
+              </div>
             </div>
 
-            {currentClass ? (
-              <div className="card p-6 glass">
-                <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Current Class</h2>
-                <p className="text-2xl mb-3">
-                  <span className="mr-2">{currentClass.classEmoji} </span>
-                  <span className="font-semibold">{currentClass.className}</span>
-                </p>
-                {currentClass.teacher && (
-                  <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-24 text-gray-500">
-                      <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
-                      Teacher:
-                    </span>
-                    <span className="ml-2">{currentClass.teacher}</span>
-                  </p>
-                )}
-                {currentClass.room && (
-                  <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-24 text-gray-500">
-                      <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
-                      Room:
-                    </span>
-                    <span className="ml-2">{currentClass.room}</span>
-                  </p>
-                )}
-              </div>
-            ) : (
-              <div className="card p-6">
-                <p className="text-gray-500">No current class</p>
-              </div>
-            )}
-
-            {nextClass ? (
+            {nextClass && (
               <div className="card p-6 border-accent-secondary/30">
                 <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Next Class</h2>
                 <p className="text-xl mb-3">
@@ -171,10 +165,6 @@ export default function Home() {
                     <span className="ml-2">{nextClass.room}</span>
                   </p>
                 )}
-              </div>
-            ) : (
-              <div className="card p-6">
-                <p className="text-gray-500">No next class</p>
               </div>
             )}
           </>
