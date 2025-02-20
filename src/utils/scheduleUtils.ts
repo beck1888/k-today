@@ -25,6 +25,12 @@ export const formatTimeRemaining = (secondsRemaining: number): string => {
   return `${seconds}s remaining`;
 };
 
+export const formatCountdown = (secondsRemaining: number): string => {
+  const minutes = Math.floor(secondsRemaining / 60);
+  const seconds = secondsRemaining % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
 export const findNextSignificantClass = (
   events: Event[],
   currentIndex: number,

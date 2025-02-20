@@ -8,6 +8,7 @@ import {
   getMinutesIntoDay,
   getSecondsIntoDay,
   formatTimeRemaining,
+  formatCountdown,
   findNextSignificantClass,
   findRemainingClasses
 } from '../utils/scheduleUtils';
@@ -24,6 +25,7 @@ export default function Home() {
   const [currentEventIndex, setCurrentEventIndex] = useState<number>(-1);
   const [nextEventIndex, setNextEventIndex] = useState<number>(-1);
   const [daySchedule, setDaySchedule] = useState<DaySchedule | null>(null);
+  const [secondsRemaining, setSecondsRemaining] = useState<number>(0);
 
   const getCurrentBlock = (daySchedule: DaySchedule, currentTime: number) => {
     const events = daySchedule.events;
@@ -31,9 +33,11 @@ export default function Home() {
     
     // If before first event of the day
     if (currentTime < events[0].timestamp * 60) {
+      const remaining = events[0].timestamp * 60 - currentTime;
+      setSecondsRemaining(remaining);
+      setTimeRemaining(formatTimeRemaining(remaining));
       setCurrentEventIndex(-1);
       setNextEventIndex(0);
-      setTimeRemaining(formatTimeRemaining(events[0].timestamp * 60 - currentTime));
       setCurrentClass(null);
       if (classes) {
         setNextClass(findNextSignificantClass(events, -1, classes));
@@ -70,8 +74,9 @@ export default function Home() {
           setRemainingClasses(findRemainingClasses(events, i, classes));
         }
         
-        const secondsRemaining = (events[i + 1].timestamp * 60) - currentTime;
-        setTimeRemaining(formatTimeRemaining(secondsRemaining));
+        const remaining = (events[i + 1].timestamp * 60) - currentTime;
+        setSecondsRemaining(remaining);
+        setTimeRemaining(formatTimeRemaining(remaining));
         
         return '';
       }
@@ -136,6 +141,16 @@ export default function Home() {
         <>
           <div className="card p-6">
             <div className="space-y-2">
+              {timeRemaining && (
+                <div className="text-center mb-4">
+                  <p className="text-6xl font-bold text-white font-mono">
+                    {formatCountdown(secondsRemaining)}
+                  </p>
+                </div>
+              )}
+              <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">
+                Current Class
+              </h2>
               {currentClass && (
                 <>
                   <div className="flex items-center gap-2 mt-1">
@@ -162,9 +177,6 @@ export default function Home() {
                     </p>
                   </div>
                 </>
-              )}
-              {timeRemaining && (
-                <p className="text-accent-secondary font-medium animate-pulse-slow">{timeRemaining}</p>
               )}
             </div>
           </div>
