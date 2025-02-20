@@ -113,3 +113,17 @@ const SECOND = 0;
 
 ## **🚀 Conclusion**
 This script is a simple yet powerful way to **simulate any date and time dynamically** while keeping time moving forward naturally. You can use it in **DevTools Console** to preview how your app behaves at different times without needing to manually change your system clock.
+
+<!-- Here's a more concise version of the snippet
+(function() {
+
+const YEAR = 2025;
+const MONTH = 12;
+const DAY = 24;
+
+const HOUR = 2;
+const MINUTE = 59;
+const SECOND = 50;  
+    
+const mockStartTime = new Date(YEAR, MONTH - 1, DAY, HOUR, MINUTE, SECOND).getTime(); const realStartTime = performance.now(); const OriginalDate = Date; Date.now = () => mockStartTime + (performance.now() - realStartTime); window.Date = class extends OriginalDate { constructor(...args) {if (args.length === 0) return new OriginalDate(Date.now()); return new OriginalDate(...args);}}; console.log("✅ Date overridden to:", new Date().toString());})();
+ -->
