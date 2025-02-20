@@ -70,5 +70,29 @@
         "classEmoji": "🥪",
         "teacher": null,
         "room": null
+    },
+    "assembly": {
+        "className": "Assembly",
+        "classEmoji": "🤝🏻",
+        "teacher": "Miraglia",
+        "room": "MPR"
+    },
+    "swap": {
+        "className": "SWAP",
+        "classEmoji": "🔄",
+        "teacher": null,
+        "room": null
+    },
+    "break": {
+        "className": "Break",
+        "classEmoji": "⏳",
+        "teacher": null,
+        "room": null
+    },
+    "kabShab": {
+        "className": "Kabbalat Shabbat",
+        "classEmoji": "🕯️",
+        "teacher": "Student Leaders",
+        "room": "MPR"
     }
 }

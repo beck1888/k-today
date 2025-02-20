@@ -32,20 +32,32 @@ export default function Home() {
           return 'The school day has concluded';
         }
         
-        const currentBlockName = events[i].name.toLowerCase().replace(/\s+/g, '');
+        // Update the case conversion to handle special cases
+        const currentBlockName = events[i].name.toLowerCase().replace(/\s+/g, '').replace('kabshab', 'kabShab');
         
         if (classes) {
-          const currentClassInfo = classes[currentBlockName] || null;
+          // Look up class info regardless of block type
+          const currentClassInfo = classes[currentBlockName] || {
+            className: events[i].name,
+            classEmoji: "📍",
+            teacher: null,
+            room: null
+          };
           setCurrentClass(currentClassInfo);
           
-          const nextBlockName = events[i + 1].name.toLowerCase().replace(/\s+/g, '');
+          // Update the case conversion to handle special cases
+          const nextBlockName = events[i + 1].name.toLowerCase().replace(/\s+/g, '').replace('kabshab', 'kabShab');
           
           if (nextBlockName === 'endofday') {
             setNextClass(null);
-          } else if (nextBlockName === 'passingperiod') {
-            setNextClass(findNextSignificantClass(events, i + 1, classes));
           } else {
-            setNextClass(classes[nextBlockName] || null);
+            // Look up next class info regardless of type
+            setNextClass(classes[nextBlockName] || {
+              className: events[i + 1].name,
+              classEmoji: "📍",
+              teacher: null,
+              room: null
+            });
           }
         }
         
