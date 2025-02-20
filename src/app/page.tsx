@@ -140,12 +140,12 @@ export default function Home() {
               {currentClass && (
                 <>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="no-select">{currentClass.classEmoji}</span>
-                    <span className="font-semibold selectable">{currentClass.className}</span>
+                    <span className="text-2xl no-select">{currentClass.classEmoji}</span>
+                    <span className="text-2xl font-semibold selectable">{currentClass.className}</span>
                   </div>
-                  <div className="text-sm text-gray-400 space-y-1">
+                  <div className="text-base text-gray-400 space-y-1">
                     <p className="flex items-center">
-                      <Image src="/icons/clock.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                      <Image src="/icons/clock.svg" alt="" width={16} height={16} className="mr-2 no-select" />
                       <span className="selectable">
                         {daySchedule && currentEventIndex !== -1 && nextEventIndex !== -1 ? 
                           `${Math.floor(daySchedule.events[currentEventIndex].timestamp / 60)}:${String(daySchedule.events[currentEventIndex].timestamp % 60).padStart(2, '0')} → ${Math.floor(daySchedule.events[nextEventIndex].timestamp / 60)}:${String(daySchedule.events[nextEventIndex].timestamp % 60).padStart(2, '0')}`
@@ -176,7 +176,7 @@ export default function Home() {
                 <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">
                   Next Class
                 </h2>
-                <p className="text-xl mb-3">
+                <p className="text-lg mb-3">
                   <span className="mr-2 no-select">{remainingClasses[0].classEmoji}</span>
                   <span className="font-semibold selectable">{remainingClasses[0].className}</span>
                 </p>
