@@ -186,7 +186,7 @@ export default function Home() {
                       onClick={() => setIsLaterClassesExpanded(!isLaterClassesExpanded)}
                       className="w-full flex items-center justify-between text-sm uppercase tracking-wider text-gray-400 mb-2"
                     >
-                      <span>Later Today ({remainingClasses.length - 1} classes)</span>
+                        <span>{remainingClasses.length - 1 > 10 ? 'Ten' : ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'][remainingClasses.length - 1]} Other {remainingClasses.length - 1 === 1 ? 'Event' : 'Events'} Today</span>
                       <span className={`transition-transform duration-200 ${isLaterClassesExpanded ? 'rotate-180' : ''}`}>
                         ▼
                       </span>
