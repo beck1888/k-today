@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import Lottie from 'lottie-react';
 import checkAnimation from '../../public/animations/check.json';
 import { ClassData, ClassInfo, ScheduleData, DaySchedule } from '../types/schedule';
 import {
@@ -14,6 +13,8 @@ import {
   findNextSignificantClass,
   findRemainingClasses
 } from '../utils/scheduleUtils';
+import dynamic from 'next/dynamic';
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 export default function Home() {
   const [schedule, setSchedule] = useState<ScheduleData | null>(null);
