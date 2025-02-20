@@ -64,5 +64,11 @@
         "classEmoji": "🚶",
         "teacher": null,
         "room": null
+    },
+    "lunch": {
+        "className": "Lunch",
+        "classEmoji": "🥪",
+        "teacher": null,
+        "room": null
     }
 }
