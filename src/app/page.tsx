@@ -114,7 +114,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="max-w-2xl mx-auto space-y-4">
+      <div className="max-w-2xl mx-auto space-y-4 no-select">
         {schedule && schedule[getDayAbbreviation()].message ? (
           <div className="card p-6 border-accent-secondary">
             <p className="text-2xl font-bold text-accent-secondary">{schedule[getDayAbbreviation()].message}</p>
@@ -127,17 +127,17 @@ export default function Home() {
                 {currentClass && (
                   <>
                     <div className="flex items-center gap-2 mt-1">
-                      <span>{currentClass.classEmoji}</span>
-                      <span className="font-semibold">{currentClass.className}</span>
+                      <span className="no-select">{currentClass.classEmoji}</span>
+                      <span className="font-semibold selectable">{currentClass.className}</span>
                     </div>
                     <div className="text-sm text-gray-400 space-y-1">
                       <p className="flex items-center">
-                        <Image src="/icons/person.svg" alt="" width={14} height={14} className="mr-2" />
-                        {currentClass.teacher || 'N/A'}
+                        <Image src="/icons/person.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                        <span className="selectable">{currentClass.teacher || 'N/A'}</span>
                       </p>
                       <p className="flex items-center">
-                        <Image src="/icons/door.svg" alt="" width={14} height={14} className="mr-2" />
-                        {currentClass.room || 'N/A'}
+                        <Image src="/icons/door.svg" alt="" width={14} height={14} className="mr-2 no-select" />
+                        <span className="selectable">{currentClass.room || 'N/A'}</span>
                       </p>
                     </div>
                   </>
@@ -150,32 +150,30 @@ export default function Home() {
 
             {remainingClasses.length > 0 && (
               <>
-                {/* Next class (always visible) */}
                 <div className="card p-6 border-accent-secondary/30">
                   <h2 className="text-sm uppercase tracking-wider text-gray-400 mb-2">
                     Next Class
                   </h2>
                   <p className="text-xl mb-3">
-                    <span className="mr-2">{remainingClasses[0].classEmoji}</span>
-                    <span className="font-semibold">{remainingClasses[0].className}</span>
+                    <span className="mr-2 no-select">{remainingClasses[0].classEmoji}</span>
+                    <span className="font-semibold selectable">{remainingClasses[0].className}</span>
                   </p>
                   <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-24 text-gray-500">
+                    <span className="inline-flex items-center w-24 text-gray-500 no-select">
                       <Image src="/icons/person.svg" alt="" width={16} height={16} className="mr-2" />
                       Teacher:
                     </span>
-                    <span className="ml-2">{remainingClasses[0].teacher || 'N/A'}</span>
+                    <span className="ml-2 selectable">{remainingClasses[0].teacher || 'N/A'}</span>
                   </p>
                   <p className="text-gray-400 flex items-center">
-                    <span className="inline-flex items-center w-24 text-gray-500">
+                    <span className="inline-flex items-center w-24 text-gray-500 no-select">
                       <Image src="/icons/door.svg" alt="" width={16} height={16} className="mr-2" />
                       Room:
                     </span>
-                    <span className="ml-2">{remainingClasses[0].room || 'N/A'}</span>
+                    <span className="ml-2 selectable">{remainingClasses[0].room || 'N/A'}</span>
                   </p>
                 </div>
 
-                {/* Later classes (collapsible) */}
                 {remainingClasses.length > 1 && (
                   <div className="card p-6 border-dark-300">
                     <button
@@ -193,8 +191,8 @@ export default function Home() {
                         {remainingClasses.slice(1).map((classInfo, index) => (
                           <div key={index} className="border-t border-dark-300 pt-4">
                             <p className="text-xl">
-                              <span className="mr-2">{classInfo.classEmoji}</span>
-                              <span className="font-semibold">{classInfo.className}</span>
+                              <span className="mr-2 no-select">{classInfo.classEmoji}</span>
+                              <span className="font-semibold selectable">{classInfo.className}</span>
                             </p>
                           </div>
                         ))}
@@ -208,8 +206,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* Time info fixed at bottom left */}
-      <div className="fixed bottom-4 left-4 text-xs text-gray-500 space-y-0.5">
+      <div className="fixed bottom-4 left-4 text-xs text-gray-500 space-y-0.5 no-select">
         <p>{getDayAbbreviation()}</p>
         <p>{getMinutesIntoDay()} minutes into day</p>
         {renderTime && (

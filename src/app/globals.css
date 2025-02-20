@@ -9,7 +9,6 @@
 body {
   @apply bg-dark-100 text-gray-100;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  user-select: none;
 }
 
 img {
@@ -27,5 +26,13 @@ img {
   
   .glass {
     @apply bg-dark-200/50 backdrop-blur-md;
+  }
+
+  .no-select {
+    @apply select-none;
+  }
+
+  .selectable {
+    @apply select-text;
   }
 }
