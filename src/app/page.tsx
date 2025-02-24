@@ -275,6 +275,19 @@ export default function Home() {
           )}
         </>
       )}
+      <button
+        className="fixed bottom-4 right-4 p-2 rounded-full bg-dark-300 hover:bg-dark-200 transition-colors"
+        onClick={() => window.open('https://kehillah.today/', '_blank')}
+        aria-label="View source code"
+      >
+        <Image
+          src="/icons/shield-fill-check.svg"
+          alt="Trust but verify logo"
+          width={24}
+          height={24}
+          className="opacity-50 hover:opacity-100 transition-opacity"
+        />
+      </button>
     </div>
   );
 }
